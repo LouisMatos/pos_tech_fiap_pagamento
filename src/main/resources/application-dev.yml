@@ -1,0 +1,46 @@
+#Configuracao do Server
+logging:
+  pattern: 
+    console: "[%d{yyyy-MM-dd HH:mm:ss}] [X-ReqID=%X{CorrelationId}] [%-5level] [%logger{70}] - %msg%n"
+
+cors:
+  origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+springdoc:
+  api-docs:
+    path: "/api-docs"
+
+spring:
+  main:
+    banner-mode: "CONSOLE"   # por algum motivo tem que ser entre aspas duplas
+    allow-bean-definition-overriding: true   
+  data:
+    mongodb:
+      database: jlapp-pagamento
+      uri: mongodb://root:MongoDB2019!@localhost:27017
+      authentication-database: admin
+      auto-index-creation: true
+      repositories:
+        type: auto
+  
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: luis
+    password: teste123
+    virtual-host: /
+    listener:
+      simple:
+        default-requeue-rejected: false
+
+
+mq:
+  queues:
+    pedidos: pedidos-mq
+    statuspedidos: status-pedidos-mq
+  exchanges:
+    direct: direct-exchange
+  routing:
+    key:
+      pedidos: pedidos-key
+      statuspedidos: status-pedidos-key
