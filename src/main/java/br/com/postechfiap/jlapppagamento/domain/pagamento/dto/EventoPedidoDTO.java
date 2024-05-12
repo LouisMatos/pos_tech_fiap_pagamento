@@ -7,7 +7,9 @@ import br.com.postechfiap.jlapppagamento.domain.enums.StatusPagamento;
 import lombok.Data;
 
 @Data
-public class PedidoPagamentoDTO {
+public class EventoPedidoDTO {
+
+  private String idMongoDB;
 
   private Long id;
 

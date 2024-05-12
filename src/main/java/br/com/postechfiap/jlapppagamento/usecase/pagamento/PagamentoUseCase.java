@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import br.com.postechfiap.jlapppagamento.domain.pagamento.dto.PedidoPagamentoDTO;
+import br.com.postechfiap.jlapppagamento.domain.pagamento.dto.EventoPedidoDTO;
 import br.com.postechfiap.jlapppagamento.domain.pagamento.gateway.IPagamentoGateway;
 import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 
@@ -27,9 +27,9 @@ public class PagamentoUseCase {
 
 
     try {
-      PedidoPagamentoDTO pedidoPagamentoDTO = mapper.readValue(message, PedidoPagamentoDTO.class);
+      EventoPedidoDTO eventoPedidoDTO = mapper.readValue(message, EventoPedidoDTO.class);
 
-      PedidoPagamentoDTO dto = pagamentoGateway.inserir(pedidoPagamentoDTO);
+      EventoPedidoDTO dto = pagamentoGateway.inserir(eventoPedidoDTO);
 
       log.info("Pedido de pagamento recebido e processado com sucesso: {}", dto);
     } catch (JsonMappingException e) {

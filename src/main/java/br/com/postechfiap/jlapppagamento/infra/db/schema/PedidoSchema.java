@@ -22,7 +22,7 @@ public class PedidoSchema implements Serializable {
   @Id
   private String id;
 
-  private Long peidoId;
+  private Long pedidoId;
 
   private String numeroPedido;
 

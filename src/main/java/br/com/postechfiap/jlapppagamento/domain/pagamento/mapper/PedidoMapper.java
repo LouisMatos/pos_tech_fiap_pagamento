@@ -1,35 +1,37 @@
 package br.com.postechfiap.jlapppagamento.domain.pagamento.mapper;
 
-import br.com.postechfiap.jlapppagamento.domain.pagamento.dto.PedidoPagamentoDTO;
+import br.com.postechfiap.jlapppagamento.domain.pagamento.dto.EventoPedidoDTO;
 import br.com.postechfiap.jlapppagamento.infra.db.schema.PedidoSchema;
 
 public class PedidoMapper {
 
-  public static PedidoSchema toPedidoSchema(PedidoPagamentoDTO pedidoPagamentoDTO) {
+  public static PedidoSchema toPedidoSchema(EventoPedidoDTO eventoPedidoDTO) {
 
     PedidoSchema pedidoSchema = new PedidoSchema();
-    pedidoSchema.setPeidoId(pedidoPagamentoDTO.getId());
-    pedidoSchema.setNumeroPedido(pedidoPagamentoDTO.getNumeroPedido());
-    pedidoSchema.setStatusPagamento(pedidoPagamentoDTO.getStatusPagamento());
-    pedidoSchema.setEstado(pedidoPagamentoDTO.getEstado());
-    pedidoSchema.setDataPedido(pedidoPagamentoDTO.getDataPedido());
-    pedidoSchema.setValorPedido(pedidoPagamentoDTO.getValorPedido());
+    pedidoSchema.setId(eventoPedidoDTO.getIdMongoDB());
+    pedidoSchema.setPedidoId(eventoPedidoDTO.getId());
+    pedidoSchema.setNumeroPedido(eventoPedidoDTO.getNumeroPedido());
+    pedidoSchema.setStatusPagamento(eventoPedidoDTO.getStatusPagamento());
+    pedidoSchema.setEstado(eventoPedidoDTO.getEstado());
+    pedidoSchema.setDataPedido(eventoPedidoDTO.getDataPedido());
+    pedidoSchema.setValorPedido(eventoPedidoDTO.getValorPedido());
 
     return pedidoSchema;
   }
 
 
-  public static PedidoPagamentoDTO toPedidoPagamentoDTO(PedidoSchema pedidoSchema) {
-    PedidoPagamentoDTO pedidoPagamentoDTO = new PedidoPagamentoDTO();
+  public static EventoPedidoDTO toPedidoPagamentoDTO(PedidoSchema pedidoSchema) {
+    EventoPedidoDTO eventoPedidoDTO = new EventoPedidoDTO();
 
-    pedidoPagamentoDTO.setId(pedidoSchema.getPeidoId());
-    pedidoPagamentoDTO.setNumeroPedido(pedidoSchema.getNumeroPedido());
-    pedidoPagamentoDTO.setStatusPagamento(pedidoSchema.getStatusPagamento());
-    pedidoPagamentoDTO.setEstado(pedidoSchema.getEstado());
-    pedidoPagamentoDTO.setDataPedido(pedidoSchema.getDataPedido());
-    pedidoPagamentoDTO.setValorPedido(pedidoSchema.getValorPedido());
+    eventoPedidoDTO.setIdMongoDB(pedidoSchema.getId());
+    eventoPedidoDTO.setId(pedidoSchema.getPedidoId());
+    eventoPedidoDTO.setNumeroPedido(pedidoSchema.getNumeroPedido());
+    eventoPedidoDTO.setStatusPagamento(pedidoSchema.getStatusPagamento());
+    eventoPedidoDTO.setEstado(pedidoSchema.getEstado());
+    eventoPedidoDTO.setDataPedido(pedidoSchema.getDataPedido());
+    eventoPedidoDTO.setValorPedido(pedidoSchema.getValorPedido());
 
-    return pedidoPagamentoDTO;
+    return eventoPedidoDTO;
   }
 
 
