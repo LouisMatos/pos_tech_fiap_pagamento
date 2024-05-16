@@ -22,7 +22,7 @@ public class PedidoPublisher {
     rabbitTemplate.convertAndSend(statusPedidoQueue.getName(), json);
   }
 
-  private String convertIntoJson(EventoPedidoDTO eventoPedidoDTO) throws JsonProcessingException {
+  public String convertIntoJson(EventoPedidoDTO eventoPedidoDTO) throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
     return mapper.writeValueAsString(eventoPedidoDTO);
