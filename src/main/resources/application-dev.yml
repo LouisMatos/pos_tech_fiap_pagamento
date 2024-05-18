@@ -16,12 +16,13 @@ spring:
     allow-bean-definition-overriding: true   
   data:
     mongodb:
-      database: jlapp-pagamento
-      uri: mongodb://root:MongoDB2019!@localhost:27017
-      authentication-database: admin
-      auto-index-creation: true
-      repositories:
-        type: auto
+      uri: mongodb://root:MongoDB2019!@localhost:27018/jlapp-producao?authSource=admin
+#      database: jlapp-pagamento
+#      uri: mongodb://root:MongoDB2019!@localhost:27017
+#      authentication-database: admin
+#      auto-index-creation: true
+#      repositories:
+#        type: auto
   
   rabbitmq:
     host: localhost
