@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jlapp-pagamento-deployment
+spec:
+  selector:
+    matchLabels:
+      app: jlapp-pagamento
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jlapp-pagamento
+    spec:
+      containers:
+      - name: jlapp-pagamento
+        image: testeluismatos/jlapp-pagamento-eks:latest
+        ports:
+        - containerPort: 8072
+        resources:
+          requests:
+            cpu: 600m
+            memory: 756Mi
+          limits:
+            cpu: 1000m
+            memory: 1536Mi
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8072
+          initialDelaySeconds: 15
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8072
+          initialDelaySeconds: 20
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 20
+        env:
+          - name: JAVA_OPTS
+            value: "-server -Xmx1536M -Xms756M -Xss128m"
+          - name: SPRING_DATA_DATABASE
+            value: jlapp-producao
+          - name: SPRING_DATA_MONGODB_URI
+            value: mongodb://root:root@mongodb:27018/jlapp-pagamento?socketTimeoutMS=1000000&authSource=admin
+          - name: MANAGEMENT_HEALTH_MONGO_ENABLED
+            value: "false"
+          - name: ENDPOINTS_MONGO_ENABLED
+            value: "true"
+          - name: SPRING_RABBITMQ_HOST
+            value: rabbitmq-deployment
+          - name: SPRING_RABBITMQ_PORT
+            value: "5672"
+          - name: SPRING_RABBITMQ_USERNAME
+            value: luis
+          - name: SPRING_RABBITMQ_PASSWORD
+            value: teste123
