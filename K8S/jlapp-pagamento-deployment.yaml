@@ -46,7 +46,7 @@ spec:
           - name: SPRING_DATA_DATABASE
             value: jlapp-producao
           - name: SPRING_DATA_MONGODB_URI
-            value: mongodb://root:root@mongodb:27018/jlapp-pagamento?socketTimeoutMS=1000000&authSource=admin
+            value: mongodb://root:root@mongodb-pagamento-service:27017/jlapp-pagamento?socketTimeoutMS=1000000&authSource=admin
           - name: MANAGEMENT_HEALTH_MONGO_ENABLED
             value: "false"
           - name: ENDPOINTS_MONGO_ENABLED
