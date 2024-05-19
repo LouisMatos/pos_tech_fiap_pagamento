@@ -25,7 +25,6 @@ public class PagamentoUseCase {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
 
-
     try {
       EventoPedidoDTO eventoPedidoDTO = mapper.readValue(message, EventoPedidoDTO.class);
 
@@ -33,16 +32,12 @@ public class PagamentoUseCase {
 
       log.info("Pedido de pagamento recebido e processado com sucesso: {}", dto);
     } catch (JsonMappingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      return false;
     } catch (JsonProcessingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      return false;
     }
 
     return true;
-
   }
-
 
 }

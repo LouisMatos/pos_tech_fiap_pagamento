@@ -79,6 +79,36 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>br/com/postechfiap/jlapppagamento/shared/exception/**</exclude>
+						<exclude>br/com/postechfiap/jlapppagamento/infra/db/schema/**</exclude>
+						<exclude>br/com/postechfiap/jlapppagamento/infra/config/db/repository/**</exclude>
+						<exclude>br/com/postechfiap/jlapppagamento/shared/logger/**</exclude>
+						<exclude>br/com/postechfiap/jlapppagamento/domain/enums/**</exclude>
+						<exclude>br/com/postechfiap/jlapppagamento/domain/**/gateway/**</exclude>
+						<exclude>br/com/postechfiap/jlapppagamento/infra/config/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
