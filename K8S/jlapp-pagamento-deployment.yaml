@@ -44,7 +44,7 @@ spec:
           - name: JAVA_OPTS
             value: "-server -Xmx1536M -Xms756M -Xss128m"
           - name: SPRING_DATA_DATABASE
-            value: jlapp-producao
+            value: jlapp-pagamento
           - name: SPRING_DATA_MONGODB_URI
             value: mongodb://root:root@mongodb:27018/jlapp-pagamento?socketTimeoutMS=1000000&authSource=admin
           - name: MANAGEMENT_HEALTH_MONGO_ENABLED
