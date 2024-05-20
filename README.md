@@ -1,7 +1,7 @@
 <h1 align="center"> Sistema de Pagamento de Lanchonete </h1>
 
 
-Contexto do Domínio:
+Contexto:
 
 Com o crescimento de uma lanchonete local, surge a necessidade de desacoplarmos serviços e Banco de Dados para mitigação de qualquer indisponibilidade total do serviço.
 Para garantir a eficiência e a satisfação dos clientes, desenvolvemos um sistema de controle de pagamento.
