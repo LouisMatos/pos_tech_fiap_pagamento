@@ -1,21 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb-pagamento-deployment
+  name: mongodb
 spec:
   selector:
     matchLabels:
-      app: mongodb-pagamento
+      app: mongodb
   template:
     metadata:
       labels:
-        app: mongodb-pagamento
+        app: mongodb
     spec:
       containers:
-      - name: mongodb-pagamento
+      - name: mongodb
         image: mongo
-        command: ["/bin/sh"]
-        args: ["-c" , "mongod --bind_ip_all --port 27017"]
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: root
@@ -28,9 +26,9 @@ spec:
         ports:
         - containerPort: 27017
         volumeMounts:
-        - name: mongodb-pagamento-storage
+        - name: mongodb-storage
           mountPath: /data/db
       volumes:
-      - name: mongodb-pagamento-storage
+      - name: mongodb-storage
         persistentVolumeClaim:
-          claimName: mongodb-pagamento-pvc
+          claimName: mongodb-pvc
