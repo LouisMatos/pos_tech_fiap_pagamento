@@ -15,7 +15,7 @@ import br.com.postechfiap.jlapppagamento.infra.db.schema.PedidoSchema;
 import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 
 @SpringBootTest
-public class PagamentoGatewayTest {
+class PagamentoGatewayTest {
 
   @Mock
   private PedidoRepository pedidoRepository;
@@ -27,7 +27,7 @@ public class PagamentoGatewayTest {
   private PagamentoGateway pagamentoGateway;
 
   @Test
-  public void shouldInsertNewOrderSuccessfully() {
+  void shouldInsertNewOrderSuccessfully() {
     EventoPedidoDTO eventoPedidoDTO = new EventoPedidoDTO();
 
     when(pedidoRepository.insert(any(PedidoSchema.class))).thenReturn(new PedidoSchema());
@@ -39,7 +39,7 @@ public class PagamentoGatewayTest {
   }
 
   @Test
-  public void shouldFindOrderSuccessfully() {
+  void shouldFindOrderSuccessfully() {
     String numeroPedido = "testNumeroPedido";
     when(pedidoRepository.findByNumeroPedido(any())).thenReturn(Optional.of(new PedidoSchema()));
 
@@ -49,7 +49,7 @@ public class PagamentoGatewayTest {
   }
 
   @Test
-  public void shouldUpdateOrderSuccessfully() {
+  void shouldUpdateOrderSuccessfully() {
     EventoPedidoDTO eventoPedidoDTO = new EventoPedidoDTO();
     when(pedidoRepository.save(any())).thenReturn(new PedidoSchema());
 

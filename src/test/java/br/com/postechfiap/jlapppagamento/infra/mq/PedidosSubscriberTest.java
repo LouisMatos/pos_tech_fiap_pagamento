@@ -15,7 +15,7 @@ import br.com.postechfiap.jlapppagamento.usecase.pagamento.PagamentoUseCase;
 
 @SpringBootTest
 @TestExecutionListeners(MockitoTestExecutionListener.class)
-public class PedidosSubscriberTest {
+class PedidosSubscriberTest {
 
   @Mock
   private PagamentoUseCase pagamentoUseCase;
@@ -27,7 +27,7 @@ public class PedidosSubscriberTest {
   private PedidosSubscriber pedidosSubscriber;
 
   @Test
-  public void shouldLogInfoWhenMessageReceived() {
+  void shouldLogInfoWhenMessageReceived() {
     String message = "testMessage";
     when(pagamentoUseCase.processarPedido(message)).thenReturn(true);
 
@@ -37,7 +37,7 @@ public class PedidosSubscriberTest {
   }
 
   @Test
-  public void shouldProcessMessageSuccessfully() {
+  void shouldProcessMessageSuccessfully() {
     String message = "testMessage";
     when(pagamentoUseCase.processarPedido(message)).thenReturn(true);
 
@@ -47,7 +47,7 @@ public class PedidosSubscriberTest {
   }
 
   @Test
-  public void shouldLogErrorWhenMessageProcessingFails() {
+  void shouldLogErrorWhenMessageProcessingFails() {
     String message = "testMessage";
     when(pagamentoUseCase.processarPedido(message)).thenReturn(false);
 

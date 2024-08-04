@@ -10,6 +10,6 @@ import br.com.postechfiap.jlapppagamento.infra.db.schema.PedidoSchema;
 public interface WebhookRepository
     extends MongoRepository<AtualizacaoStatusPagamentoSchema, String> {
 
-  Optional<PedidoSchema> findByNumeroPedido(String numero_pedido);
+  Optional<PedidoSchema> findByNumeroPedido(String numeroPedido);
 
 }

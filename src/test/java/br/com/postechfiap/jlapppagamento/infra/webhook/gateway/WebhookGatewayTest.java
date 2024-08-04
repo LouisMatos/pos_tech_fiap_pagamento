@@ -14,7 +14,7 @@ import br.com.postechfiap.jlapppagamento.infra.db.repository.WebhookRepository;
 import br.com.postechfiap.jlapppagamento.infra.db.schema.AtualizacaoStatusPagamentoSchema;
 import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 
-public class WebhookGatewayTest {
+class WebhookGatewayTest {
 
   @InjectMocks
   private WebhookGateway webhookGateway;
@@ -31,7 +31,7 @@ public class WebhookGatewayTest {
   }
 
   @Test
-  public void shouldReturnStatusUpdateWhenInsertedSuccessfully() {
+  void shouldReturnStatusUpdateWhenInsertedSuccessfully() {
     AtualizacaoStatusPagamento atualizacaoStatusPagamento = new AtualizacaoStatusPagamento();
     when(webhookRepository.save(any())).thenReturn(new AtualizacaoStatusPagamentoSchema());
 
@@ -42,7 +42,7 @@ public class WebhookGatewayTest {
   }
 
   @Test
-  public void shouldLogInfoWhenStatusUpdateInsertedSuccessfully() {
+  void shouldLogInfoWhenStatusUpdateInsertedSuccessfully() {
     AtualizacaoStatusPagamento atualizacaoStatusPagamento = new AtualizacaoStatusPagamento();
     when(webhookRepository.save(any())).thenReturn(new AtualizacaoStatusPagamentoSchema());
 

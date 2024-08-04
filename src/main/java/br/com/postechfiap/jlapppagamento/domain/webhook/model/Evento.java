@@ -12,7 +12,6 @@ public class Evento {
 
   private String idWebhook;
 
-  // private Object payload;
 
   public String getId() {
     return id;

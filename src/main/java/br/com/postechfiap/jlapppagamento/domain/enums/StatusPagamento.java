@@ -6,26 +6,26 @@ public enum StatusPagamento {
   APROVADO(2), //
   NEGADO(3); //
 
-  private int statusPagamento;
+  private int valorStatusPagamento;
 
   StatusPagamento(int statusPagamento) {
-    this.statusPagamento = statusPagamento;
+    this.valorStatusPagamento = statusPagamento;
   }
 
   public boolean estaAguardando() {
-    return AGUARDANDO.getValorEstado() == this.statusPagamento;
+    return AGUARDANDO.getValorEstado() == this.valorStatusPagamento;
   }
 
   public boolean estaAprovado() {
-    return APROVADO.getValorEstado() == this.statusPagamento;
+    return APROVADO.getValorEstado() == this.valorStatusPagamento;
   }
 
   public boolean estaNegado() {
-    return NEGADO.getValorEstado() == this.statusPagamento;
+    return NEGADO.getValorEstado() == this.valorStatusPagamento;
   }
 
   public int getValorEstado() {
-    return this.statusPagamento;
+    return this.valorStatusPagamento;
   }
 
 }

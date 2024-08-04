@@ -22,8 +22,6 @@ public class EventoPedidoDTO {
 
   private BigDecimal valorPedido;
 
-  public EventoPedidoDTO() {}
-
   public String getIdMongoDB() {
     return idMongoDB;
   }

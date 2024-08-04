@@ -24,8 +24,6 @@ public class WebhookDTO {
   @JsonProperty("data")
   private Object payload;
 
-  public WebhookDTO() {}
-
   public String getId() {
     return id;
   }

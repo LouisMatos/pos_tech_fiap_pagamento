@@ -18,7 +18,7 @@ import br.com.postechfiap.jlapppagamento.domain.pagamento.dto.EventoPedidoDTO;
 
 @SpringBootTest
 @TestExecutionListeners(MockitoTestExecutionListener.class)
-public class PedidoPublisherTest {
+class PedidoPublisherTest {
 
   @Mock
   private RabbitTemplate rabbitTemplate;
@@ -30,7 +30,7 @@ public class PedidoPublisherTest {
   private PedidoPublisher pedidoPublisher;
 
   @Test
-  public void shouldSendEventToQueue() throws JsonProcessingException {
+  void shouldSendEventToQueue() throws JsonProcessingException {
     EventoPedidoDTO eventoPedidoDTO = new EventoPedidoDTO();
     when(statusPedidoQueue.getName()).thenReturn("testQueue");
 
@@ -40,7 +40,7 @@ public class PedidoPublisherTest {
   }
 
   @Test
-  public void shouldConvertEventToJSON() throws JsonProcessingException {
+  void shouldConvertEventToJSON() throws JsonProcessingException {
     EventoPedidoDTO eventoPedidoDTO = new EventoPedidoDTO();
 
     String json = pedidoPublisher.convertIntoJson(eventoPedidoDTO);

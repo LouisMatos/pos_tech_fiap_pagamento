@@ -1,6 +1,5 @@
 package br.com.postechfiap.jlapppagamento.infra.webhook.gateway;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import br.com.postechfiap.jlapppagamento.domain.webhook.gateway.IWebhookGateway;
 import br.com.postechfiap.jlapppagamento.domain.webhook.mapper.AtualizacaoStatusPagamentoMapper;
@@ -12,11 +11,14 @@ import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 @Component
 public class WebhookGateway implements IWebhookGateway {
 
-  @Autowired
-  private WebhookRepository webhookRepository;
+  private final WebhookRepository webhookRepository;
 
-  @Autowired
-  private Logger log;
+  private final Logger log;
+
+  public WebhookGateway(WebhookRepository webhookRepository, Logger log) {
+    this.webhookRepository = webhookRepository;
+    this.log = log;
+  }
 
   @Override
   public AtualizacaoStatusPagamento inserir(AtualizacaoStatusPagamento atualizacaoStatusPagamento) {

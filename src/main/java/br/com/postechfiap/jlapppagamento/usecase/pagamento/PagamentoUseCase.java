@@ -2,7 +2,6 @@ package br.com.postechfiap.jlapppagamento.usecase.pagamento;
 
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import br.com.postechfiap.jlapppagamento.domain.pagamento.dto.EventoPedidoDTO;
@@ -31,8 +30,6 @@ public class PagamentoUseCase {
       EventoPedidoDTO dto = pagamentoGateway.inserir(eventoPedidoDTO);
 
       log.info("Pedido de pagamento recebido e processado com sucesso: {}", dto);
-    } catch (JsonMappingException e) {
-      return false;
     } catch (JsonProcessingException e) {
       return false;
     }

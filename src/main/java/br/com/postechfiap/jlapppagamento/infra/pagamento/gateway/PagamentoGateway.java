@@ -1,7 +1,6 @@
 package br.com.postechfiap.jlapppagamento.infra.pagamento.gateway;
 
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import br.com.postechfiap.jlapppagamento.domain.pagamento.dto.EventoPedidoDTO;
 import br.com.postechfiap.jlapppagamento.domain.pagamento.gateway.IPagamentoGateway;
@@ -14,12 +13,14 @@ import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 @Component
 public class PagamentoGateway implements IPagamentoGateway {
 
-  @Autowired
-  private PedidoRepository pedidoRepository;
+  private final PedidoRepository pedidoRepository;
 
-  @Autowired
-  private Logger log;
+  private final Logger log;
 
+  public PagamentoGateway(PedidoRepository pedidoRepository, Logger log) {
+    this.pedidoRepository = pedidoRepository;
+    this.log = log;
+  }
 
   @Override
   public EventoPedidoDTO inserir(EventoPedidoDTO eventoPedidoDTO) {
@@ -35,10 +36,8 @@ public class PagamentoGateway implements IPagamentoGateway {
   public EventoPedidoDTO buscaPedidoNumeroPedido(String numeroPedido) {
     Optional<PedidoSchema> pedidoSchema = pedidoRepository.findByNumeroPedido(numeroPedido);
 
-    EventoPedidoDTO eventoPedidoDTO = PedidoMapper.toPedidoPagamentoDTO(pedidoSchema.orElseThrow(
+    return PedidoMapper.toPedidoPagamentoDTO(pedidoSchema.orElseThrow(
         () -> new NotFoundException("Número de pedido: " + numeroPedido + " não encontrado!")));
-
-    return eventoPedidoDTO;
   }
 
 

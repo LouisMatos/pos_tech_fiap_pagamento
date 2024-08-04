@@ -11,14 +11,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.postechfiap.jlapppagamento.domain.webhook.dto.WebhookDTO;
 import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 import br.com.postechfiap.jlapppagamento.usecase.webhook.WebhookUseCase;
 
 
-public class WebhookControllerTest {
+class WebhookControllerTest {
 
   @InjectMocks
   private WebhookController webhookController;
@@ -35,8 +34,7 @@ public class WebhookControllerTest {
   }
 
   @Test
-  public void shouldReturnAcceptedWhenWebhookInsertedSuccessfully()
-      throws JsonMappingException, JsonProcessingException {
+  void shouldReturnAcceptedWhenWebhookInsertedSuccessfully() throws JsonProcessingException {
     WebhookDTO webhookDTO = createFakeWebhookDTO();
     doNothing().when(webhookUseCase).recuperandoEventoWebhook(any());
 
@@ -47,7 +45,7 @@ public class WebhookControllerTest {
   }
 
   @Test
-  public void shouldLogInfoWhenWebhookInsertedSuccessfully() {
+  void shouldLogInfoWhenWebhookInsertedSuccessfully() {
     WebhookDTO webhookDTO = new WebhookDTO();
     doNothing().when(webhookUseCase).recuperandoEventoWebhook(any());
 
@@ -56,7 +54,7 @@ public class WebhookControllerTest {
     verify(log).info(any(String.class));
   }
 
-  public WebhookDTO createFakeWebhookDTO() throws JsonMappingException, JsonProcessingException {
+  public WebhookDTO createFakeWebhookDTO() throws JsonProcessingException {
     WebhookDTO webhookDTO = new WebhookDTO();
     webhookDTO.setId("f46dd524-d9d4-4ae6-ad94-ef6e1e93e2e1");
     webhookDTO.setIdNotificacao("10000P0001");

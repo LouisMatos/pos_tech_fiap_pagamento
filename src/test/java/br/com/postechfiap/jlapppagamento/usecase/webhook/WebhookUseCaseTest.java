@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.postechfiap.jlapppagamento.domain.enums.Estado;
 import br.com.postechfiap.jlapppagamento.domain.enums.StatusPagamento;
@@ -27,7 +26,7 @@ import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 
 @SpringBootTest
 @TestExecutionListeners(MockitoTestExecutionListener.class)
-public class WebhookUseCaseTest {
+class WebhookUseCaseTest {
 
   @Mock
   private IWebhookGateway webhookGateway;
@@ -45,8 +44,7 @@ public class WebhookUseCaseTest {
   private WebhookUseCase webhookUseCase;
 
   @Test
-  public void shouldLogInfoWhenWebhookEventReceived()
-      throws JsonMappingException, JsonProcessingException {
+  void shouldLogInfoWhenWebhookEventReceived() throws JsonProcessingException {
     WebhookDTO webhookDTO = createFakeWebhookDTO();
 
     when(webhookGateway.inserir(any())).thenReturn(createFakeAtualizacaoStatusPagamento());
@@ -60,8 +58,7 @@ public class WebhookUseCaseTest {
   }
 
   @Test
-  public void shouldUpdatePaymentStatusSuccessfully()
-      throws JsonMappingException, JsonProcessingException {
+  void shouldUpdatePaymentStatusSuccessfully() throws JsonProcessingException {
     WebhookDTO webhookDTO = createFakeWebhookDTO();
     when(webhookGateway.inserir(any())).thenReturn(createFakeAtualizacaoStatusPagamento());
     when(pagamentoGateway.buscaPedidoNumeroPedido(any())).thenReturn(createFakeEventoPedidoDTO());
@@ -73,7 +70,7 @@ public class WebhookUseCaseTest {
   }
 
   @Test
-  public void shouldSendUpdatedOrderToQueue() throws JsonProcessingException {
+  void shouldSendUpdatedOrderToQueue() throws JsonProcessingException {
     WebhookDTO webhookDTO = createFakeWebhookDTO();
     when(webhookGateway.inserir(any())).thenReturn(createFakeAtualizacaoStatusPagamento());
     when(pagamentoGateway.buscaPedidoNumeroPedido(any())).thenReturn(createFakeEventoPedidoDTO());
@@ -84,7 +81,7 @@ public class WebhookUseCaseTest {
     verify(pedidoPublisher).send(any());
   }
 
-  public WebhookDTO createFakeWebhookDTO() throws JsonMappingException, JsonProcessingException {
+  public WebhookDTO createFakeWebhookDTO() throws JsonProcessingException {
     WebhookDTO webhookDTO = new WebhookDTO();
     webhookDTO.setId("f46dd524-d9d4-4ae6-ad94-ef6e1e93e2e1");
     webhookDTO.setIdNotificacao("10000P0001");

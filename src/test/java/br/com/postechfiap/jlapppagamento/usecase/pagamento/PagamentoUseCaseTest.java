@@ -22,7 +22,7 @@ import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
 
 @SpringBootTest
 @TestExecutionListeners(MockitoTestExecutionListener.class)
-public class PagamentoUseCaseTest {
+class PagamentoUseCaseTest {
 
   @Mock
   private IPagamentoGateway pagamentoGateway;
@@ -34,7 +34,7 @@ public class PagamentoUseCaseTest {
   private PagamentoUseCase pagamentoUseCase;
 
   @Test
-  public void shouldLogInfoWhenPaymentOrderProcessedSuccessfully() {
+  void shouldLogInfoWhenPaymentOrderProcessedSuccessfully() {
     String message = "testMessage";
     when(pagamentoGateway.inserir(any())).thenReturn(createFakeEventoPedidoDTO());
 
@@ -44,7 +44,7 @@ public class PagamentoUseCaseTest {
   }
 
   @Test
-  public void shouldReturnTrueWhenPaymentOrderProcessedSuccessfully() {
+  void shouldReturnTrueWhenPaymentOrderProcessedSuccessfully() {
     String message = "{\r\n" + "    \"id\": 11,\r\n" + "    \"numeroPedido\": \"IXUHGD\",\r\n"
         + "    \"statusPagamento\": \"AGUARDANDO\",\r\n" + "    \"estado\": \"RECEBIDO\",\r\n"
         + "    \"dataPedido\": [\r\n" + "        2024,\r\n" + "        5,\r\n" + "        18,\r\n"
@@ -58,7 +58,7 @@ public class PagamentoUseCaseTest {
   }
 
   @Test
-  public void shouldHandleJsonProcessingException() {
+  void shouldHandleJsonProcessingException() {
     String message = "invalidJsonMessage";
 
     boolean result = pagamentoUseCase.processarPedido(message);

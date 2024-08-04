@@ -8,6 +8,6 @@ import br.com.postechfiap.jlapppagamento.infra.db.schema.PedidoSchema;
 @Repository
 public interface PedidoRepository extends MongoRepository<PedidoSchema, String> {
 
-  Optional<PedidoSchema> findByNumeroPedido(String numero_pedido);
+  Optional<PedidoSchema> findByNumeroPedido(String numeroPedido);
 
 }

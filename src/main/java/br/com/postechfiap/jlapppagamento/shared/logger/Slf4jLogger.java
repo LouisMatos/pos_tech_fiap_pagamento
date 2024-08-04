@@ -17,7 +17,7 @@ public final class Slf4jLogger implements Logger {
 
   private String getClassName(final InjectionPoint ip) {
     return Optional.ofNullable(getMethodOrElseNull(ip.getMethodParameter()))
-        .map(m -> m.getReturnType().getName())
+        .map(m -> m != null ? m.getReturnType().getName() : null)
         .orElseGet(() -> getMethodParameterOfDeclaredClass(ip));
   }
 
