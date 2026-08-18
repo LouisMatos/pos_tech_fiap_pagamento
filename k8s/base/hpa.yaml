@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: jlapp-producao-deployment
+  name: jlapp-pagamento-deployment
   namespace: default
 spec:
   minReplicas: 1
@@ -9,7 +9,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: jlapp-producao-deployment
+    name: jlapp-pagamento-deployment
   targetCPUUtilizationPercentage: 80
 status:
   currentReplicas: 2

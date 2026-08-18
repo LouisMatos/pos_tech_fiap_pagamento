@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim as build
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
@@ -7,19 +7,18 @@ COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
 
-RUN chmod +x mvnw 
-RUN chmod +x .mvn 
+RUN chmod +x mvnw && \
+    sed -i 's/\r$//' mvnw && \
+    ./mvnw package -DskipTests dependency:resolve
 
-#RUN ./mvnw package -DskipTests
+FROM eclipse-temurin:21-jre
 
-# clean up the file
-RUN sed -i 's/\r$//' mvnw 
-# run with the SH path
-RUN /bin/sh mvnw package -DskipTests dependency:resolve
+RUN groupadd --system app && useradd --system --gid app app
 
-#RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+WORKDIR /app
 
-WORKDIR /app/target
+COPY --from=build /app/target/jlapp-pagamento-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT java -jar jlapp-pagamento-0.0.1-SNAPSHOT.jar
+USER app
 
+ENTRYPOINT ["java", "-jar", "app.jar"]

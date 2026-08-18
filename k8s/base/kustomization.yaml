@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - jlapp-pagamento-deployment.yaml
+  - jlapp-pagamento-service.yaml
+  - service-account.yaml
+  - hpa.yaml
+  - nginx-config.yaml
+  - nginx-deployment.yaml
+  - nginx-service.yaml
+  - DB/mongo-deployment.yaml
+  - DB/mongo-pv.yaml
+  - DB/mongo-pvc.yaml
+  - DB/mongo-service.yaml
+  - mq/rabbitmq-deployment.yaml
+  - mq/rabbitmq-service.yaml
+  - Metrics/components.yaml
+
+images:
+  - name: jlapp-pagamento
+    newName: jlapp-pagamento
+    newTag: latest
