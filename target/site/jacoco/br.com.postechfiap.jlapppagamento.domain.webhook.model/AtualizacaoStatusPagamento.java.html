@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AtualizacaoStatusPagamento.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jlapp-pagamento</a> &gt; <a href="index.source.html" class="el_package">br.com.postechfiap.jlapppagamento.domain.webhook.model</a> &gt; <span class="el_source">AtualizacaoStatusPagamento.java</span></div><h1>AtualizacaoStatusPagamento.java</h1><pre class="source lang-java linenums">package br.com.postechfiap.jlapppagamento.domain.webhook.model;
+
+
+public class AtualizacaoStatusPagamento extends Evento {
+
+  private String numeroPedido;
+
+  private String pagamento;
+
+  private Double valorPago;
+
+  private String meioPagamento;
+
+  public AtualizacaoStatusPagamento(String id, String idNotificacao, String tipoEvento,
+      String dataEvento, String idWebhook, String numeroPedido, String pagamento, Double valorPago,
+      String meioPagamento) {
+<span class="fc" id="L17">    super(id, idNotificacao, tipoEvento, dataEvento, idWebhook);</span>
+<span class="fc" id="L18">    this.numeroPedido = numeroPedido;</span>
+<span class="fc" id="L19">    this.pagamento = pagamento;</span>
+<span class="fc" id="L20">    this.valorPago = valorPago;</span>
+<span class="fc" id="L21">    this.meioPagamento = meioPagamento;</span>
+<span class="fc" id="L22">  }</span>
+
+<span class="fc" id="L24">  public AtualizacaoStatusPagamento() {}</span>
+
+  public String getNumeroPedido() {
+<span class="fc" id="L27">    return numeroPedido;</span>
+  }
+
+  public void setNumeroPedido(String numeroPedido) {
+<span class="fc" id="L31">    this.numeroPedido = numeroPedido;</span>
+<span class="fc" id="L32">  }</span>
+
+  public String getPagamento() {
+<span class="fc" id="L35">    return pagamento;</span>
+  }
+
+  public void setPagamento(String pagamento) {
+<span class="fc" id="L39">    this.pagamento = pagamento;</span>
+<span class="fc" id="L40">  }</span>
+
+  public Double getValorPago() {
+<span class="fc" id="L43">    return valorPago;</span>
+  }
+
+  public void setValorPago(Double valorPago) {
+<span class="fc" id="L47">    this.valorPago = valorPago;</span>
+<span class="fc" id="L48">  }</span>
+
+  public String getMeioPagamento() {
+<span class="fc" id="L51">    return meioPagamento;</span>
+  }
+
+  public void setMeioPagamento(String meioPagamento) {
+<span class="fc" id="L55">    this.meioPagamento = meioPagamento;</span>
+<span class="fc" id="L56">  }</span>
+
+  @Override
+  public String toString() {
+<span class="fc" id="L60">    return &quot;AtualizacaoStatusPagamento [numeroPedido=&quot; + numeroPedido + &quot;, pagamento=&quot; + pagamento</span>
+<span class="fc" id="L61">        + &quot;, valorPago=&quot; + valorPago + &quot;, meioPagamento=&quot; + meioPagamento + &quot;]&quot;;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
