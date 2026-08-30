@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - mongodb-statefulset.yaml
 
 patches:
   - path: service-account-patch.yaml

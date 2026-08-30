@@ -7,62 +7,69 @@ spec:
     matchLabels:
       app: jlapp-pagamento
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
         app: jlapp-pagamento
     spec:
       serviceAccountName: pagamento-sa
+      terminationGracePeriodSeconds: 45
       containers:
       - name: jlapp-pagamento
         image: jlapp-pagamento
         ports:
         - containerPort: 8072
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 10"]
         resources:
           requests:
-            cpu: 300m
-            memory: 512Mi
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 1000m
+            memory: 1Gi
+        startupProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8072
+          periodSeconds: 5
+          failureThreshold: 24
         readinessProbe:
           httpGet:
-            path: /actuator/health
+            path: /actuator/health/readiness
             port: 8072
-          initialDelaySeconds: 15
-          successThreshold: 1
-          failureThreshold: 3
-          periodSeconds: 10
+          periodSeconds: 5
         livenessProbe:
           httpGet:
-            path: /actuator/health
+            path: /actuator/health/liveness
             port: 8072
-          initialDelaySeconds: 20
-          successThreshold: 1
-          failureThreshold: 3
           periodSeconds: 20
         env:
           - name: JAVA_OPTS
             value: "-server -Xmx1024M -Xms512M -Xss128m -XX:+UseParallelGC -XX:MaxRAMPercentage=75 -XX:ActiveProcessorCount=2 -XX:+UnlockExperimentalVMOptions"
-          - name: SPRING_DATA_DATABASE
-            value: jlapp-pagamento
-          - name: SPRING_DATA_MONGODB_HOST
-            valueFrom: { secretKeyRef: { name: pagamento-db-secret, key: host } }
-          - name: SPRING_DATA_MONGODB_PORT
-            valueFrom: { secretKeyRef: { name: pagamento-db-secret, key: port } }
-          - name: SPRING_DATA_MONGODB_USERNAME
-            valueFrom: { secretKeyRef: { name: pagamento-db-secret, key: username } }
-          - name: SPRING_DATA_MONGODB_PASSWORD
-            valueFrom: { secretKeyRef: { name: pagamento-db-secret, key: password } }
+          # URI unica: Spring Boot ignora host/port/username/password quando
+          # spring.data.mongodb.uri esta presente (ver application-dev.yml).
+          # dev: aponta pro StatefulSet mongodb do overlay dev.
+          # hom/prod: aponta pro DocumentDB gerenciado. O workflow monta a
+          # URI certa por ambiente (ver Sync DB/MQ secrets).
+          - name: SPRING_DATA_MONGODB_URI
+            valueFrom: { secretKeyRef: { name: pagamento-db-secret, key: uri } }
           - name: MANAGEMENT_HEALTH_MONGO_ENABLED
             value: "false"
-          - name: ENDPOINTS_MONGO_ENABLED
-            value: "true"
           - name: SPRING_RABBITMQ_HOST
             valueFrom: { secretKeyRef: { name: shared-mq-secret, key: host } }
           - name: SPRING_RABBITMQ_PORT
-            value: "5671"
+            valueFrom: { secretKeyRef: { name: shared-mq-secret, key: port } }
           - name: SPRING_RABBITMQ_USERNAME
             valueFrom: { secretKeyRef: { name: shared-mq-secret, key: username } }
           - name: SPRING_RABBITMQ_PASSWORD
             valueFrom: { secretKeyRef: { name: shared-mq-secret, key: password } }
+          - name: SPRING_RABBITMQ_SSL_ENABLED
+            value: "true"
