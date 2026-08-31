@@ -3,9 +3,19 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - mongodb-statefulset.yaml
 
 patches:
   - path: service-account-patch.yaml
+  - target:
+      kind: Deployment
+      name: jlapp-pagamento-deployment
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: SPRING_PROFILES_ACTIVE
+          value: dev
   - target:
       kind: Deployment
       name: jlapp-pagamento-deployment

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EventoPedidoDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jlapp-pagamento</a> &gt; <a href="index.source.html" class="el_package">br.com.postechfiap.jlapppagamento.domain.pagamento.dto</a> &gt; <span class="el_source">EventoPedidoDTO.java</span></div><h1>EventoPedidoDTO.java</h1><pre class="source lang-java linenums">package br.com.postechfiap.jlapppagamento.domain.pagamento.dto;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import br.com.postechfiap.jlapppagamento.domain.enums.Estado;
+import br.com.postechfiap.jlapppagamento.domain.enums.StatusPagamento;
+
+
+public class EventoPedidoDTO {
+
+  private String idMongoDB;
+
+  private Long id;
+
+  private String numeroPedido;
+
+  private StatusPagamento statusPagamento;
+
+  private Estado estado;
+
+  private LocalDateTime dataPedido;
+
+  private BigDecimal valorPedido;
+
+<span class="fc" id="L25">  public EventoPedidoDTO() {}</span>
+
+  public String getIdMongoDB() {
+<span class="fc" id="L28">    return idMongoDB;</span>
+  }
+
+  public void setIdMongoDB(String idMongoDB) {
+<span class="fc" id="L32">    this.idMongoDB = idMongoDB;</span>
+<span class="fc" id="L33">  }</span>
+
+  public Long getId() {
+<span class="fc" id="L36">    return id;</span>
+  }
+
+  public void setId(Long id) {
+<span class="fc" id="L40">    this.id = id;</span>
+<span class="fc" id="L41">  }</span>
+
+  public String getNumeroPedido() {
+<span class="fc" id="L44">    return numeroPedido;</span>
+  }
+
+  public void setNumeroPedido(String numeroPedido) {
+<span class="fc" id="L48">    this.numeroPedido = numeroPedido;</span>
+<span class="fc" id="L49">  }</span>
+
+  public StatusPagamento getStatusPagamento() {
+<span class="fc" id="L52">    return statusPagamento;</span>
+  }
+
+  public void setStatusPagamento(StatusPagamento statusPagamento) {
+<span class="fc" id="L56">    this.statusPagamento = statusPagamento;</span>
+<span class="fc" id="L57">  }</span>
+
+  public Estado getEstado() {
+<span class="fc" id="L60">    return estado;</span>
+  }
+
+  public void setEstado(Estado estado) {
+<span class="fc" id="L64">    this.estado = estado;</span>
+<span class="fc" id="L65">  }</span>
+
+  public LocalDateTime getDataPedido() {
+<span class="fc" id="L68">    return dataPedido;</span>
+  }
+
+  public void setDataPedido(LocalDateTime dataPedido) {
+<span class="fc" id="L72">    this.dataPedido = dataPedido;</span>
+<span class="fc" id="L73">  }</span>
+
+  public BigDecimal getValorPedido() {
+<span class="fc" id="L76">    return valorPedido;</span>
+  }
+
+  public void setValorPedido(BigDecimal valorPedido) {
+<span class="fc" id="L80">    this.valorPedido = valorPedido;</span>
+<span class="fc" id="L81">  }</span>
+
+  @Override
+  public String toString() {
+<span class="fc" id="L85">    return &quot;EventoPedidoDTO [idMongoDB=&quot; + idMongoDB + &quot;, id=&quot; + id + &quot;, numeroPedido=&quot;</span>
+<span class="fc" id="L86">        + numeroPedido + &quot;, statusPagamento=&quot; + statusPagamento + &quot;, estado=&quot; + estado</span>
+<span class="fc" id="L87">        + &quot;, dataPedido=&quot; + dataPedido + &quot;, valorPedido=&quot; + valorPedido + &quot;]&quot;;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,8 @@
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/infra/mq/PedidosSubscriberTest.java
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/infra/mq/PedidoPublisherTest.java
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/usecase/pagamento/PagamentoUseCaseTest.java
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/JlappPagamentoApplicationTests.java
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/infra/webhook/controller/WebhookControllerTest.java
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/infra/webhook/gateway/WebhookGatewayTest.java
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/infra/pagamento/gateway/PagamentoGatewayTest.java
+/Users/luismatos/Documents/RefatoracaoPosTech/pos_tech_fiap_pagamento/src/test/java/br/com/postechfiap/jlapppagamento/usecase/webhook/WebhookUseCaseTest.java

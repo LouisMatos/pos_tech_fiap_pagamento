@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebhookGateway.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jlapp-pagamento</a> &gt; <a href="index.source.html" class="el_package">br.com.postechfiap.jlapppagamento.infra.webhook.gateway</a> &gt; <span class="el_source">WebhookGateway.java</span></div><h1>WebhookGateway.java</h1><pre class="source lang-java linenums">package br.com.postechfiap.jlapppagamento.infra.webhook.gateway;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import br.com.postechfiap.jlapppagamento.domain.webhook.gateway.IWebhookGateway;
+import br.com.postechfiap.jlapppagamento.domain.webhook.mapper.AtualizacaoStatusPagamentoMapper;
+import br.com.postechfiap.jlapppagamento.domain.webhook.model.AtualizacaoStatusPagamento;
+import br.com.postechfiap.jlapppagamento.infra.db.repository.WebhookRepository;
+import br.com.postechfiap.jlapppagamento.infra.db.schema.AtualizacaoStatusPagamentoSchema;
+import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
+
+@Component
+<span class="fc" id="L13">public class WebhookGateway implements IWebhookGateway {</span>
+
+  @Autowired
+  private WebhookRepository webhookRepository;
+
+  @Autowired
+  private Logger log;
+
+  @Override
+  public AtualizacaoStatusPagamento inserir(AtualizacaoStatusPagamento atualizacaoStatusPagamento) {
+<span class="fc" id="L23">    AtualizacaoStatusPagamentoSchema atualizacaoStatusPagamentoSchema =</span>
+        AtualizacaoStatusPagamentoMapper
+<span class="fc" id="L25">            .toAtualizacaoStatusPagamentoSchema(atualizacaoStatusPagamento);</span>
+<span class="fc" id="L26">    log.info(&quot;Salvando novo evento atualizacao Status Pagamento no banco de dados!&quot;);</span>
+<span class="fc" id="L27">    return AtualizacaoStatusPagamentoMapper</span>
+<span class="fc" id="L28">        .toDomain(webhookRepository.save(atualizacaoStatusPagamentoSchema));</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

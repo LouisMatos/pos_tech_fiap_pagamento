@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WebhookController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jlapp-pagamento</a> &gt; <a href="index.source.html" class="el_package">br.com.postechfiap.jlapppagamento.infra.webhook.controller</a> &gt; <span class="el_source">WebhookController.java</span></div><h1>WebhookController.java</h1><pre class="source lang-java linenums">package br.com.postechfiap.jlapppagamento.infra.webhook.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import br.com.postechfiap.jlapppagamento.domain.webhook.dto.WebhookDTO;
+import br.com.postechfiap.jlapppagamento.shared.logger.log.Logger;
+import br.com.postechfiap.jlapppagamento.usecase.webhook.WebhookUseCase;
+
+@RestController
+@RequestMapping(path = &quot;/api/v1/webhook&quot;)
+public class WebhookController {
+
+  private final WebhookUseCase webhookUseCase;
+
+  private final Logger log;
+
+<span class="fc" id="L20">  public WebhookController(WebhookUseCase webhookUseCase, Logger log) {</span>
+<span class="fc" id="L21">    this.webhookUseCase = webhookUseCase;</span>
+<span class="fc" id="L22">    this.log = log;</span>
+<span class="fc" id="L23">  }</span>
+
+  @PostMapping
+  public ResponseEntity&lt;Void&gt; inserir(@RequestBody WebhookDTO webhookDTO) {
+<span class="fc" id="L27">    log.info(&quot;Iniciando a coleta do webhook.&quot;);</span>
+<span class="fc" id="L28">    webhookUseCase.recuperandoEventoWebhook(webhookDTO);</span>
+<span class="fc" id="L29">    return ResponseEntity.accepted().build();</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
