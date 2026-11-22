@@ -1,79 +1,32 @@
-name: Deploy to AWS EKS
+name: Deploy
+
+# Deploy manual dedicado. Nunca dispara sozinho - so via "Run workflow" (workflow_dispatch).
+# CI (ci.yml) testa/publica a imagem automaticamente; fazer deploy em qualquer
+# ambiente (dev/hom/prod) e sempre acao humana.
 
 on:
-  push:
-    branches: [ "develop", "main" ]
-    tags: [ "v*" ]
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
-  pull_request:
-    paths-ignore:
-      - "**.md"
-      - "docs/**"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Ambiente alvo'
+        required: true
+        type: choice
+        options:
+          - dev
+          - hom
+          - prod
+      image_tag:
+        description: 'Tag da imagem ja publicada no ECR (ex: SHA do commit)'
+        required: true
 
 permissions:
   contents: read
-  id-token: write   # necessario para OIDC (aws-actions/configure-aws-credentials)
+  id-token: write
 
 jobs:
-
-  unit-test:
+  deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'adopt'
-          cache: maven
-      - run: mvn verify
-
-  build:
-    runs-on: ubuntu-latest
-    needs: unit-test
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'adopt'
-          cache: maven
-      - name: Package
-        run: mvn package -DskipTests
-
-  # Resolve o ambiente alvo a partir do gatilho: develop->dev, main->hom, tag v*->prod.
-  resolve-env:
-    runs-on: ubuntu-latest
-    needs: build
-    outputs:
-      environment: ${{ steps.resolve.outputs.environment }}
-    steps:
-      - id: resolve
-        run: |
-          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
-            echo "environment=prod" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "environment=hom" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            echo "environment=dev" >> "$GITHUB_OUTPUT"
-          else
-            echo "environment=" >> "$GITHUB_OUTPUT"
-          fi
-
-  publish:
-    if: needs.resolve-env.outputs.environment != ''
-    runs-on: ubuntu-latest
-    needs: resolve-env
-    environment: ${{ needs.resolve-env.outputs.environment }}
-    outputs:
-      image: ${{ steps.image.outputs.image }}
+    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -88,93 +41,93 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build Docker image
-        id: image
+      - name: Confirma imagem existe no ECR
         run: |
-          IMAGE="${{ steps.login-ecr.outputs.registry }}/jlapp-pagamento:${{ github.sha }}"
-          docker build -t "$IMAGE" .
-          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
-
-      - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ steps.image.outputs.image }}
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'
-          ignore-unfixed: true
-
-      - name: Push Docker image
-        run: docker push "${{ steps.image.outputs.image }}"
-
-  deploy:
-    needs: [resolve-env, publish]
-    if: needs.resolve-env.outputs.environment != ''
-    runs-on: ubuntu-latest
-    environment: ${{ needs.resolve-env.outputs.environment }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-pos_tech_fiap_pagamento
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws ecr describe-images --repository-name jlapp-pagamento --image-ids imageTag="${{ inputs.image_tag }}" > /dev/null
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v4
 
+      - name: Install kustomize
+        uses: imranismail/setup-kustomize@v2
+
       - name: Update kubeconfig
-        run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name jlapp-cluster-${{ needs.resolve-env.outputs.environment }}
+        run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name jlapp-cluster-${{ inputs.environment }}
 
       - name: Sync DB/MQ secrets from Secrets Manager
         run: |
-          ENV="${{ needs.resolve-env.outputs.environment }}"
-          DB_SECRET=$(aws secretsmanager get-secret-value --secret-id "jlapp-cluster-${ENV}-pagamento-db-credentials" --query SecretString --output text)
+          set -euo pipefail
+          ENV="${{ inputs.environment }}"
           MQ_SECRET=$(aws secretsmanager get-secret-value --secret-id "jlapp-cluster-${ENV}-mq-mq-credentials" --query SecretString --output text)
 
-          echo "::add-mask::$(echo "$DB_SECRET" | jq -r .host)"
-          echo "::add-mask::$(echo "$DB_SECRET" | jq -r .port)"
-          echo "::add-mask::$(echo "$DB_SECRET" | jq -r .username)"
-          echo "::add-mask::$(echo "$DB_SECRET" | jq -r .password)"
           echo "::add-mask::$(echo "$MQ_SECRET" | jq -r .host)"
+          echo "::add-mask::$(echo "$MQ_SECRET" | jq -r .port)"
           echo "::add-mask::$(echo "$MQ_SECRET" | jq -r .username)"
           echo "::add-mask::$(echo "$MQ_SECRET" | jq -r .password)"
 
-          kubectl create secret generic pagamento-db-secret \
-            --from-literal=host="$(echo "$DB_SECRET" | jq -r .host)" \
-            --from-literal=port="$(echo "$DB_SECRET" | jq -r .port)" \
-            --from-literal=username="$(echo "$DB_SECRET" | jq -r .username)" \
-            --from-literal=password="$(echo "$DB_SECRET" | jq -r .password)" \
-            --dry-run=client -o yaml | kubectl apply -f -
-
           kubectl create secret generic shared-mq-secret \
             --from-literal=host="$(echo "$MQ_SECRET" | jq -r .host)" \
+            --from-literal=port="$(echo "$MQ_SECRET" | jq -r .port)" \
             --from-literal=username="$(echo "$MQ_SECRET" | jq -r .username)" \
             --from-literal=password="$(echo "$MQ_SECRET" | jq -r .password)" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+          # spring.data.mongodb.uri anula host/port/username/password no Spring
+          # Boot, entao pagamento-db-secret carrega uma URI ja montada - uma
+          # chave so, o app nao sabe se esta falando com um pod ou com o
+          # DocumentDB gerenciado.
+          if [ "${ENV}" = "dev" ]; then
+            # regenerar a senha a cada deploy quebraria o Mongo ja inicializado
+            if ! kubectl get secret mongo-creds >/dev/null 2>&1; then
+              kubectl create secret generic mongo-creds \
+                --from-literal=username=root \
+                --from-literal=password="$(openssl rand -hex 16)"
+            fi
+            MONGO_USER=$(kubectl get secret mongo-creds -o jsonpath='{.data.username}' | base64 -d)
+            MONGO_PASS=$(kubectl get secret mongo-creds -o jsonpath='{.data.password}' | base64 -d)
+            echo "::add-mask::${MONGO_PASS}"
+            MONGO_URI="mongodb://${MONGO_USER}:${MONGO_PASS}@mongodb-0.mongodb.default.svc.cluster.local:27017/jlapp-pagamento?authSource=admin"
+          else
+            DB_SECRET=$(aws secretsmanager get-secret-value --secret-id "jlapp-cluster-${ENV}-pagamento-db-credentials" --query SecretString --output text)
+            DB_HOST=$(echo "$DB_SECRET" | jq -r .host)
+            DB_USER=$(echo "$DB_SECRET" | jq -r .username)
+            DB_PASS=$(echo "$DB_SECRET" | jq -r .password)
+            echo "::add-mask::${DB_HOST}"
+            echo "::add-mask::${DB_USER}"
+            echo "::add-mask::${DB_PASS}"
+            # DocumentDB exige TLS - ver pendencia de global-bundle.pem no plano
+            MONGO_URI="mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:27017/jlapp-pagamento?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false&authSource=admin"
+          fi
+          echo "::add-mask::${MONGO_URI}"
+
+          kubectl create secret generic pagamento-db-secret \
+            --from-literal=uri="${MONGO_URI}" \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Set IRSA role arn in overlay
         run: |
           ROLE_ARN="${{ secrets.PAGAMENTO_IRSA_ROLE_ARN }}"
-          sed -i "s#REPLACE_IRSA_ROLE_ARN#$ROLE_ARN#" k8s/overlays/${{ needs.resolve-env.outputs.environment }}/service-account-patch.yaml
+          sed -i "s#REPLACE_IRSA_ROLE_ARN#$ROLE_ARN#" k8s/overlays/${{ inputs.environment }}/service-account-patch.yaml
 
       - name: Set image tag in overlay
         run: |
-          IMAGE_FULL="${{ needs.publish.outputs.image }}"
-          IMAGE_REPO="${IMAGE_FULL%:*}"
-          IMAGE_TAG="${IMAGE_FULL##*:}"
-          cat >> k8s/overlays/${{ needs.resolve-env.outputs.environment }}/kustomization.yaml <<EOF
-          images:
-            - name: jlapp-pagamento
-              newName: ${IMAGE_REPO}
-              newTag: ${IMAGE_TAG}
-          EOF
+          IMAGE_REPO="${{ steps.login-ecr.outputs.registry }}/jlapp-pagamento"
+          cd k8s/overlays/${{ inputs.environment }}
+          kustomize edit set image "jlapp-pagamento=${IMAGE_REPO}:${{ inputs.image_tag }}"
 
       - name: Deploy via Kustomize
         run: |
-          kubectl apply -k k8s/overlays/${{ needs.resolve-env.outputs.environment }}
+          kubectl apply -k k8s/overlays/${{ inputs.environment }}
+
+      - name: Wait for Ingress
+        run: |
+          kubectl wait --for=condition=Programmed ingress/jlapp-pagamento-ingress -n default --timeout=180s
 
       - name: Smoke test rollout
         run: |
-          kubectl rollout status deployment/jlapp-pagamento-deployment -n default --timeout=120s
+          kubectl rollout status deployment/jlapp-pagamento-deployment -n default --timeout=300s
+
+      - name: Smoke test
+        run: |
+          ALB_HOST=$(kubectl get ingress jlapp-pagamento-ingress -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          curl -sf --max-time 10 -X POST "http://${ALB_HOST}/api/v1/webhook" -H 'Content-Type: application/json' -d '{}' -o /dev/null

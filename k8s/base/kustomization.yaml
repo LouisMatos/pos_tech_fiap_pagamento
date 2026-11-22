@@ -6,16 +6,8 @@ resources:
   - jlapp-pagamento-service.yaml
   - service-account.yaml
   - hpa.yaml
-  - nginx-config.yaml
-  - nginx-deployment.yaml
-  - nginx-service.yaml
-  - DB/mongo-deployment.yaml
-  - DB/mongo-pv.yaml
-  - DB/mongo-pvc.yaml
-  - DB/mongo-service.yaml
-  - mq/rabbitmq-deployment.yaml
-  - mq/rabbitmq-service.yaml
-  - Metrics/components.yaml
+  - pdb.yaml
+  - ingress.yaml
 
 images:
   - name: jlapp-pagamento
