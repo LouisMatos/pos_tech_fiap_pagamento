@@ -52,8 +52,8 @@ spec:
             port: 8072
           periodSeconds: 20
         env:
-          - name: JAVA_OPTS
-            value: "-server -Xmx1024M -Xms512M -Xss128m -XX:+UseParallelGC -XX:MaxRAMPercentage=75 -XX:ActiveProcessorCount=2 -XX:+UnlockExperimentalVMOptions"
+          - name: JAVA_TOOL_OPTIONS
+            value: "-XX:MaxRAMPercentage=75 -XX:+UseSerialGC -XX:TieredStopAtLevel=1 -Xshare:auto"
           # URI unica: Spring Boot ignora host/port/username/password quando
           # spring.data.mongodb.uri esta presente (ver application-dev.yml).
           # dev: aponta pro StatefulSet mongodb do overlay dev.
