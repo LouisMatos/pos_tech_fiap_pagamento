@@ -16,13 +16,9 @@ spring:
     allow-bean-definition-overriding: true   
   data:
     mongodb:
-      uri: mongodb://root:MongoDB2019!@localhost:27017/jlapp-pagamento?authSource=admin
-#      database: jlapp-pagamento
-#      uri: mongodb://root:MongoDB2019!@localhost:27017
-#      authentication-database: admin
-#      auto-index-creation: true
-#      repositories:
-#        type: auto
+      # em k8s, SPRING_DATA_MONGODB_URI vem do secret pagamento-db-secret
+      # (StatefulSet local em dev, DocumentDB em hom/prod - ver Deployment)
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/jlapp-pagamento}
   
   rabbitmq:
     host: localhost
